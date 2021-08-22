@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <a href="/create" class="btn btn-success">Add New</a>
+    <form action="/findByName" method="get">
+        <input type="text" class="form-control" placeholder="search" name="findName">
+        <button type="submit" class="btn btn-success">Find</button>
+    </form>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>EmployeeCode</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Salary</th>
+            <th>Branch</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="staff : ${list}">
+            <td th:text="${staff.id}"></td>
+            <td th:text="${staff.employeeCode}"></td>
+<!--            <td th:text="${staff.name}"></td>-->
+            <td><a th:href="@{/view/__${staff.id}__}" th:text="${staff.name}"></a></td>
+            <td th:text="${staff.age}"></td>
+            <td th:text="${staff.salary}"></td>
+            <td th:text="${staff.branch}"></td>
+            <td><a th:href="@{/edit/__${staff.id}__}" class="btn btn-warning">Edit</a></td>
+            <td><a th:href="@{/delete/__${staff.id}__}" class="btn btn-danger">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <a th:href="@{'/staff'(page=${list.number - 1})}" th:if="${list.hasPrevious()}" class="btn btn-warning">Previous</a>
+    <span th:text="${list.number + 1}"></span>/<span th:text="${list.totalPages}"></span>
+    <a th:href="@{'/staff'(page=${list.number + 1})}" th:if="${list.hasNext()}" class="btn btn-info">Next</a>
+</div>
+</body>
+</html>
